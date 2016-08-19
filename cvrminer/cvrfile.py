@@ -30,6 +30,8 @@ The 'meta' type appear only once and with the entry:
 
 import csv
 
+import sys
+
 import json
 
 from pprint import pprint
@@ -122,8 +124,12 @@ class CvrFile(object):
                 if not header:
                     header = features.keys()
                     csv_writer.writerow(header)
-                values = [unicode(value).encode('utf-8')
-                          for value in features.values()]
+                if sys.version_info >= (3,0): # python 3 uses str, not unicode
+                    values = [str(value).encode('utf-8')
+                              for value in features.values()]
+                else:
+                    values = [unicode(value).encode('utf-8')
+                              for value in features.values()]
                 csv_writer.writerow(values)
 
 
